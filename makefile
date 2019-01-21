@@ -54,15 +54,10 @@ a.out:	ytab.o $(OFILES)
 
 $(OFILES):	awk.h ytab.h proto.h
 
-#Clear dependency for parallel build: (make -j)
-#YACC generated y.tab.c and y.tab.h at the same time
-#this needs to be a static pattern rules otherwise multiple target
-#are mapped onto multiple executions of yacc, which overwrite 
-#each others outputs.
-y%.c y%.h:	awk.h proto.h awkgram.y
+ytab.c:	awk.h proto.h awkgram.y
 	$(YACC) $(YFLAGS) awkgram.y
-	mv y.$*.c y$*.c
-	mv y.$*.h y$*.h
+	mv y.tab.c ytab.c
+	mv y.tab.h ytab.h
 
 ytab.h:	ytab.c
 
